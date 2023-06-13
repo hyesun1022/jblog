@@ -67,7 +67,7 @@ public class UserController {
 		if(authUser != null) {
 			System.out.println("로그인 성공");
 			session.setAttribute("authUser", authUser);
-			return "redirect:/main/index";
+			return "redirect:/";
 		}else {
 			System.out.println("로그인 실패");
 			
@@ -86,12 +86,14 @@ public class UserController {
 		return "user/joinForm";
 	}
 	
-	//회원가입하기(user등록 및 blog생성)
+	//회원가입하기(user등록 및 blog,category생성)
 	@RequestMapping(value="/join", method = {RequestMethod.GET,RequestMethod.POST})
 	public String join(@ModelAttribute UserVo userVo) {
 		System.out.println("UserController.join()");
 		int usercnt = userService.join(userVo);
-		int blogcnt = userService.createBlog(userVo); 
+		int blogcnt = userService.createBlog(userVo);
+		int catecnt = userService.createCategory(userVo);
+		
 		
 		if(usercnt>0) {
 			return "user/joinSuccess";

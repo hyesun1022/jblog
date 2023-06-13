@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.javaex.vo.BlogVo;
+import com.javaex.vo.CategoryVo;
 import com.javaex.vo.UserVo;
 
 @Repository
@@ -12,6 +13,15 @@ public class UserDao {
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	//카테고리 생성
+	public int insertCate(CategoryVo cateVo) {
+		System.out.println("UserDao.insertCate()");
+		int catecnt = sqlSession.insert("user.insertCate", cateVo);
+		System.out.println("카테고리생성: "+catecnt);
+		return catecnt;
+	}
+	
 	
 	//블로그 생성
 	public int insertBlog(BlogVo blogVo) {
@@ -44,7 +54,7 @@ public class UserDao {
 	
 	//회원가입
 	public int insertUser(UserVo userVo) {
-		System.out.println(" UserDao.insertUser()");
+		System.out.println("UserDao.insertUser()");
 
         int usercnt = sqlSession.insert("user.insertUser", userVo);
 		System.out.println("회원가입등록: "+usercnt);
