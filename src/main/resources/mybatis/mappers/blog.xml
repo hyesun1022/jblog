@@ -3,6 +3,26 @@
 
 <mapper namespace="blog">
 
+
+
+    <!-- 블로그관리-베이직 업데이트(타이틀만 저장) -->
+    <update id="updateBasicByTitle" parameterType="com.javaex.vo.BlogVo">
+		<![CDATA[
+			update blog set blogTitle = #{blogTitle}
+		    where id = #{id}  
+		  ]]>
+	</update>
+
+    <!-- 블로그관리-베이직 업데이트 -->
+    <update id="updateBasic" parameterType="com.javaex.vo.BlogVo">
+		<![CDATA[
+			update blog set blogTitle = #{blogTitle},
+		                    logoFile = #{logoFile}
+		    where id = #{id}  
+		  ]]>
+	</update>
+
+
     <!-- 메인 블로그 정보 가져오기 -->
 	 <select id="selectMainList" parameterType="String" resultType="com.javaex.vo.BlogVo">
       <![CDATA[

@@ -21,16 +21,9 @@
 			<div id="profilecate_area">
 				<div id="profile">
 					
-			 <c:choose>
-			    <c:when test="${sessionScope.authUser==null}">
-					<img id="proImg" src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg">
-				</c:when>
-		        <c:otherwise>
-					<img id="proImg" src="">
-				</c:otherwise>
-			</c:choose>
-					
-					<div id="nick">${sessionScope.authUser.userName}(${sessionScope.authUser.id})님</div>
+
+					<img id="proImg" src="${pageContext.request.contextPath}/upload/${bMap.blogVo.logoFile}">
+					<div id="nick">${bMap.blogVo.userName}(${bMap.blogVo.id})님</div>
 				</div>
 				<div id="cate">
 					<div class="text-left">
