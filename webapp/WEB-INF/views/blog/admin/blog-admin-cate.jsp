@@ -9,6 +9,8 @@
 <title>JBlog</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
 
+<!-- jquery -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.12.4.js"></script>
 
 </head>
 
@@ -20,8 +22,8 @@
 
 		<div id="content">
 			<ul id="admin-menu" class="clearfix">
-				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/${bMap.blogVo.id}/admin/basic">기본설정</a></li>
-				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${bMap.blogVo.id}/admin/cate">카테고리</a></li>
+				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${bMap.blogVo.id}/admin/basic">기본설정</a></li>
+				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/${bMap.blogVo.id}/admin/cate">카테고리</a></li>
 				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${bMap.blogVo.id}/admin/write">글작성</a></li>
 			</ul>
 			<!-- //admin-menu -->
@@ -47,17 +49,7 @@
 		      		</thead>
 		      		<tbody id="cateList">
 		      			<!-- 리스트 영역 -->
-		      			<c:forEach items="${requestScope.bMap.cateList}" var="CategoryVo">
-		      			<tr>
-							<td>${CategoryVo.cateNo}</td>
-							<td>${CategoryVo.cateName}</td>
-							<td>7</td>
-							<td>${CategoryVo.description}</td>
-						    <td class='text-center'>
-						    	<img class="btnCateDel" src="${pageContext.request.contextPath}/assets/images/delete.jpg">
-						    </td>
-						</tr>
-						</c:forEach>
+
 						<!-- 리스트 영역 -->
 					</tbody>
 				</table>
@@ -69,6 +61,7 @@
 					</colgroup>
 		      		<tr>
 		      			<td class="t">카테고리명</td>
+		      			<input type="hidden" name="id" value="${bMap.blogVo.id}">
 		      			<td><input type="text" name="name" value=""></td>
 		      		</tr>
 		      		<tr>
@@ -94,7 +87,96 @@
 	</div>
 	<!-- //wrap -->
 </body>
+<script type="text/javascript">
+//카테고리 추가 버튼 클릭
+$("#btnAddCate").on("click", function(){
+	console.log("추가 버튼 클릭");
+	
+	var id = $("[name='id']").val();
+	var cateName = $("[name='name']").val();
+	var desc = $("[name='desc']").val();
 
+	var categoryVo ={
+		id: id,
+		cateName: cateName,
+		description: desc
+	};
+	
+	$.ajax({
+		
+		url : "${pageContext.request.contextPath }/${bMap.blogVo.id}/admin/cateAdd",		
+		type : "post",
+		contentType : "application/json",
+		data : JSON.stringify(categoryVo),
+
+		dataType : "json",
+		success : function(jsonResult){
+			/*성공시 처리해야될 코드 작성*/
+			console.log(jsonResult);
+			
+/* 			if(jsonResult.result == "success"){
+				
+				render(jsonResult.data,"up"); 
+				
+				$("[name='name']").val("");
+				$("[name='password']").val("");
+			}else{
+				
+			}
+ */
+		},
+		error : function(XHR, status, error) { 
+			console.error(status + " : " + error);
+		}
+    });
+	
+});
+
+
+//전체 리스트 가져오기 
+$(document).ready(function(){
+	fetchList();
+	
+});
+	function fetchList(){
+		$.ajax({
+			url : "${pageContext.request.contextPath }/${bMap.blogVo.id}/admin/cateList",		
+			type : "post",
+
+			dataType : "json",
+			success : function(jsonResult){
+				console.log(jsonResult);
+  				var cateList = jsonResult.data;
+					
+			    for(var i=0;i<cateList.length; i++){
+		            render(cateList[i],"down");
+			    }   
+			},
+			error : function(XHR, status, error) { 
+				  console.error(status + " : " + error); 
+			}
+		});
+	}
+	
+	function render(CategoryVo){
+		
+		var str="";
+
+		str += '	   <tr>';
+		str += '			<td>'+ CategoryVo.cateNo +'</td>';
+		str += '			<td>'+ CategoryVo.cateName+'</td>';
+		str += '			<td>7</td>';
+		str += '			<td>'+ CategoryVo.description+'</td>';
+		str += '			<td class="text-center">';
+		str += '				<img class="btnCateDel" src="${pageContext.request.contextPath}/assets/images/delete.jpg">';
+		str += '	  		</td>';
+		str += '	  </tr>';
+
+		$("#cateList").prepend(str);
+
+	}
+
+</script>
 
 
 

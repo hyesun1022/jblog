@@ -16,6 +16,22 @@ public class BlogDao {
 	@Autowired
 	private SqlSession sqlSession;
 	//카테고리 별 포스트 갯수
+	//블로그관리-카테고리 추가된 정보 가져오기
+	public void selectCate(int cateNo) {
+		System.out.println("BlogDao.selectCate()");
+		sqlSession.selectOne("blog.selectCateByNo", cateNo);
+	}
+	
+	
+	//블로그관리-카테고리 추가
+	public int insertCate(CategoryVo categoryVo) {
+		System.out.println("BlogDao.insertCate()");
+		
+		sqlSession.insert("blog.insertCate", categoryVo);
+		System.out.println("카테고리 추가: "+categoryVo);
+		
+		return categoryVo.getCateNo();
+	}
 	
 	
 	//블로그관리-베이직 업데이트(파일이 없는경고 타이틀만 있는경우)

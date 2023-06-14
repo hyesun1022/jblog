@@ -26,17 +26,27 @@ public class BlogService {
 	
 	String saveDir = "C:\\javaStudy\\upload";
 	
+	//블로그 관리 - 카테고리 추가 및 리스트 리스트 가져오기
+	public void cateAdd(CategoryVo categoryVo) {
+		System.out.println("BlogService.cateAdd()");
+		
+		//카테고리 추가
+		blogDao.insertCate(categoryVo);
+		System.out.println(categoryVo.getCateNo());
+		int cateNo = categoryVo.getCateNo();
+		
+		blogDao.selectCate(cateNo);
+		
+	}
+	
 	
 	//블로그 관리 - 카테고리리스트 불러오기
-	public Map<String, Object> cateList(String blogId) {
+	public List<CategoryVo> cateList(String blogId) {
 		System.out.println("BlogService.cateList()");
 		
 		List<CategoryVo> cateList = blogDao.selectCateList(blogId);
 		
-		Map<String, Object> bMap = new HashMap<String, Object>();
-		bMap.put("cateList",cateList);
-		
-		return bMap;
+		return cateList;
 	}
 	
 	

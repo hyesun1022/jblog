@@ -2,8 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="blog">
+    <!-- 블로그관리-카테고리 추가된거 검색 -->
+    <select id="selectCateByNo" parameterType="String" resultType="com.javaex.vo.CategoryVo">
+      <![CDATA[
+         select cateNo,
+                id,
+                cateName,
+                description,
+                regDate 
+         from category 
+         where cateNo = #{cateNo}
+      ]]>
+     </select>
 
-
+	<!-- 블로그관리-카테고리 추가 -->
+	<insert id="insertCate" parameterType="com.javaex.vo.CategoryVo">
+	<selectKey keyProperty="cateNo" resultType="int" order="BEFORE">	
+		select seq_category_no.nextval from dual
+	</selectKey>
+	  <![CDATA[
+	       insert into category 
+           values (#{cateNo},
+                   #{id}, 
+                   #{cateName},
+                   #{description},
+                   sysdate)
+	  ]]>
+	</insert>
 
     <!-- 블로그관리-베이직 업데이트(타이틀만 저장) -->
     <update id="updateBasicByTitle" parameterType="com.javaex.vo.BlogVo">
@@ -21,7 +46,6 @@
 		    where id = #{id}  
 		  ]]>
 	</update>
-
 
     <!-- 메인 블로그 정보 가져오기 -->
 	 <select id="selectMainList" parameterType="String" resultType="com.javaex.vo.BlogVo">
