@@ -26,8 +26,16 @@ public class BlogService {
 	
 	String saveDir = "C:\\javaStudy\\upload";
 	
+	//블로그 관리 - 카테고리 삭제
+	public int deleteCate(CategoryVo categoryVo) {
+		System.out.println("BlogService.deleteCate()");
+		
+		int count = blogDao.deleteCate(categoryVo);
+		return count;
+	}
+	
 	//블로그 관리 - 카테고리 추가 및 리스트 리스트 가져오기
-	public void cateAdd(CategoryVo categoryVo) {
+	public CategoryVo cateAdd(CategoryVo categoryVo) {
 		System.out.println("BlogService.cateAdd()");
 		
 		//카테고리 추가
@@ -35,8 +43,9 @@ public class BlogService {
 		System.out.println(categoryVo.getCateNo());
 		int cateNo = categoryVo.getCateNo();
 		
-		blogDao.selectCate(cateNo);
-		
+		//카테고리 가져오기
+		CategoryVo cateVo = blogDao.selectCate(cateNo);
+		return cateVo;
 	}
 	
 	

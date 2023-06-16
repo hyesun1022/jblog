@@ -15,11 +15,26 @@ public class BlogDao {
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	
 	//카테고리 별 포스트 갯수
+	//블로그관리-카테고리 삭제
+	public int deleteCate(CategoryVo categoryVo) {
+		System.out.println("BlogDao.deleteCate()");
+		
+		int count = sqlSession.delete("blog.deleteCate", categoryVo);
+		System.out.println("카테고리 삭제 성공: "+count);
+		
+		return count;
+	}
+	
+	
 	//블로그관리-카테고리 추가된 정보 가져오기
-	public void selectCate(int cateNo) {
+	public CategoryVo selectCate(int cateNo) {
 		System.out.println("BlogDao.selectCate()");
-		sqlSession.selectOne("blog.selectCateByNo", cateNo);
+		CategoryVo categoryVo = sqlSession.selectOne("blog.selectCateByNo", cateNo);
+		
+		return categoryVo;
 	}
 	
 	

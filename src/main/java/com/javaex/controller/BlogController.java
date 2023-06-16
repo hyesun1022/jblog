@@ -29,15 +29,33 @@ public class BlogController {
 	
 	@Autowired
 	private BlogService blogService;
+	//블로그 관리 - 카테고리 삭제
+	@ResponseBody
+	@RequestMapping(value="{blogId}/admin/remove", method = {RequestMethod.GET,RequestMethod.POST})
+	public JsonResult remove(@ModelAttribute CategoryVo categoryVo) {
+		System.out.println("BlogController.remove()");
+
+        int count = blogService.deleteCate(categoryVo);
+        
+		JsonResult jsonResult = new JsonResult();
+		jsonResult.success(count);
+		
+		return jsonResult;
+	}
+	
 	
 	//블로그 관리 - 카테고리 추가
 	@ResponseBody
-	@RequestMapping(value="{blogId}/admin/cateAdd")
-	public String cateAdd(@PathVariable("blogId") String blogId,@RequestBody CategoryVo categoryVo) {
+	@RequestMapping(value="{blogId}/admin/cateAdd", method = {RequestMethod.GET,RequestMethod.POST})
+	public JsonResult cateAdd(@PathVariable("blogId") String blogId,@RequestBody CategoryVo categoryVo) {
 		System.out.println("BlogController.cateAdd()");
-		blogService.cateAdd(categoryVo);
+		CategoryVo cateVo = blogService.cateAdd(categoryVo);
 		
-		return "";
+		//jsonResult에 담기
+		JsonResult jsonResult = new JsonResult();
+		jsonResult.success(cateVo);
+		
+		return jsonResult;
 	}
 	
 	//블로그 관리 - 카테고리폼

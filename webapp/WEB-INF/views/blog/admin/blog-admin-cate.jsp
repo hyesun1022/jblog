@@ -47,11 +47,11 @@
 			      			<th>삭제</th>      			
 			      		</tr>
 		      		</thead>
-		      		<tbody id="cateList">
+					<tbody id="cateList" >
 		      			<!-- 리스트 영역 -->
 
 						<!-- 리스트 영역 -->
-					</tbody>
+					</tbody>			
 				</table>
       	
 		      	<table id="admin-cate-add" >
@@ -88,6 +88,41 @@
 	<!-- //wrap -->
 </body>
 <script type="text/javascript">
+//카테고리 삭제 클릭
+$("#cateList").on("click",".btnCateDel", function(){
+	console.log("삭제버튼 클릭");
+	
+	var cateno = $(this).data("cateno");
+	console.log(cateno);
+	
+	var categoryVo = {
+			cateNo: cateno 
+	}
+	
+	$.ajax({
+		
+		url : "${pageContext.request.contextPath }/${bMap.blogVo.id}/admin/remove",		
+		type : "post",
+		data : categoryVo,
+
+		dataType : "json",
+		success : function(jsonResult){
+			console.log(jsonResult);
+			/*성공시 처리해야될 코드 작성*/
+ 			if(jsonResult.data > 0){
+				//화면에서 지우기
+			    $("#t-"+CategoryVo.cateNo).remove();
+			}else{
+				
+			} 
+		},
+		error : function(XHR, status, error) { 
+			console.error(status + " : " + error);
+		}
+    });
+});
+
+
 //카테고리 추가 버튼 클릭
 $("#btnAddCate").on("click", function(){
 	console.log("추가 버튼 클릭");
@@ -114,16 +149,17 @@ $("#btnAddCate").on("click", function(){
 			/*성공시 처리해야될 코드 작성*/
 			console.log(jsonResult);
 			
-/* 			if(jsonResult.result == "success"){
+ 			if(jsonResult.result == "success"){
 				
-				render(jsonResult.data,"up"); 
+				render(jsonResult.data); 
 				
-				$("[name='name']").val("");
-				$("[name='password']").val("");
+				var id = $("[name='id']").val();
+				var cateName = $("[name='name']").val();
+				var desc = $("[name='desc']").val();
 			}else{
 				
 			}
- */
+
 		},
 		error : function(XHR, status, error) { 
 			console.error(status + " : " + error);
@@ -168,9 +204,10 @@ $(document).ready(function(){
 		str += '			<td>7</td>';
 		str += '			<td>'+ CategoryVo.description+'</td>';
 		str += '			<td class="text-center">';
-		str += '				<img class="btnCateDel" src="${pageContext.request.contextPath}/assets/images/delete.jpg">';
+		str += '				<img class="btnCateDel" data-cateno="'+CategoryVo.cateNo+'" src="${pageContext.request.contextPath}/assets/images/delete.jpg">';
 		str += '	  		</td>';
 		str += '	  </tr>';
+		
 
 		$("#cateList").prepend(str);
 
