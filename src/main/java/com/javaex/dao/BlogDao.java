@@ -17,7 +17,14 @@ public class BlogDao {
 	private SqlSession sqlSession;
 	
 	
-	//카테고리 별 포스트 갯수
+	//블로그관리-카테고리별 포스트 갯수
+	public int selectPostCnt(String blogId) {
+		System.out.println("BlogDao.selectPostCnt()");
+		
+		int postCnt = sqlSession.selectOne("blog.selectPostCnt", blogId);
+		return postCnt;
+	}
+	
 	//블로그관리-카테고리 삭제
 	public int deleteCate(CategoryVo categoryVo) {
 		System.out.println("BlogDao.deleteCate()");

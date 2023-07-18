@@ -2,12 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="blog">
+    <!-- 블로그관리-카테고리 포스트갯수 -->
+    <select id="selectPostCnt" parameterType="String" resultType="int">
+	     <![CDATA[
+	        select c.cateno,count(*) 
+			from (select cateno 
+			      from category
+			      where id= #{blogId})c,post p
+			where c.cateno = p.cateno
+	     ]]>
+    </select>
+
     <!-- 블로그관리-카테고리 삭제-->
     <delete id="deleteCate" parameterType="com.javaex.vo.CategoryVo">
-        <![CDATA[
+         <![CDATA[
              delete from category
              where cateNo= #{cateNo} 
-        ]]>
+         ]]>
     </delete>
 
     <!-- 블로그관리-카테고리 추가된거 검색 -->

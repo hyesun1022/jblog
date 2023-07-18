@@ -54,6 +54,7 @@ public class BlogService {
 		System.out.println("BlogService.cateList()");
 		
 		List<CategoryVo> cateList = blogDao.selectCateList(blogId);
+		int postCnt = blogDao.selectPostCnt(blogId);
 		
 		return cateList;
 	}

@@ -29,6 +29,8 @@ public class BlogController {
 	
 	@Autowired
 	private BlogService blogService;
+	
+	
 	//블로그 관리 - 카테고리 삭제
 	@ResponseBody
 	@RequestMapping(value="{blogId}/admin/remove", method = {RequestMethod.GET,RequestMethod.POST})
